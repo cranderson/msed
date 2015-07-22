@@ -26,6 +26,7 @@ along with msed.  If not, see <http://www.gnu.org/licenses/>.
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
+#include <time.h>
 #include <linux/hdreg.h>
 #include <errno.h>
 #include <vector>
@@ -214,8 +215,14 @@ void MsedDevOS::identify()
 
 void MsedDevOS::osmsSleep(uint32_t ms)
 {
+    struct timespec req = {0};
+    time_t sec = (int)(ms/1000);
+    ms = ms - (sec*1000);
+    req.tv_sec = sec;
+    req.tv_nsec = ms*1000000L;
 
-    usleep(ms * 1000); //convert to microseconds
+    while(nanosleep(&req,&req) == -1)
+        continue;
     return;
 }
 
