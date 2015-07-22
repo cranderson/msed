@@ -47,8 +47,9 @@ void MsedDevOpal::init(const char * devref)
 {
 	uint8_t lastRC;
 	MsedDevOS::init(devref);
-	if((lastRC = properties()) != 0) 
+	if((lastRC = properties()) != 0) {
 		LOG(E) << "Properties exchange failed";
+	}
 }
 
 uint8_t MsedDevOpal::initialsetup(char * password)
